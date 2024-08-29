@@ -1,8 +1,8 @@
 {
-    "name": "arnedesmedt/json-immutable-objects",
+    "name": "team-blue/php-json-immutable-objects",
     "type": "library",
     "description": "Immutable objects with a json schema",
-    "homepage": "https://github.com/arnedesmedt/json-immutable-objects",
+    "homepage": "https://gitlab.group.team.blue/be-platforms/packages/php/json-immutable-objects",
     "license": "MIT",
     "authors": [
         {
@@ -21,7 +21,7 @@
         "symfony/http-kernel": "~6.0 || ~7.0"
     },
     "require-dev" : {
-        "arnedesmedt/value-objects": "^0.4.25",
+        "team-blue/php-value-objects": "^0.4.25",
         "doctrine/coding-standard": "~12.0",
         "phpmd/phpmd": "~2.0",
         "phpro/grumphp": "~2.0",
