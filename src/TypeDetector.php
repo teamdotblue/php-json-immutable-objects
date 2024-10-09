@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects;
+namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\JsonImmutableObjects\Exception\ClassException;
 use ADS\Util\ScalarUtil;
 use DateTime;
 use EventEngine\JsonSchema\AnnotatedType;
@@ -14,6 +13,7 @@ use EventEngine\JsonSchema\JsonSchemaAwareRecord;
 use EventEngine\JsonSchema\ProvidesValidationRules;
 use EventEngine\JsonSchema\Type;
 use EventEngine\JsonSchema\Type\StringType;
+use TeamBlue\JsonImmutableObjects\Exception\ClassException;
 
 use function array_map;
 use function class_exists;

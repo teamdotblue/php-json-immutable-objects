@@ -2,18 +2,8 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Unit;
+namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
-use ADS\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
-use ADS\JsonImmutableObjects\Tests\Object\RandomClass;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Bool\TestBool;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Enum\IntEnum;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Enum\StringEnum;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Float\TestFloat;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Int\TestInt;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\List\TestList;
-use ADS\JsonImmutableObjects\Tests\Object\ValueObject\List\TestListImmutable;
-use ADS\JsonImmutableObjects\TypeDetector;
 use DateTime;
 use EventEngine\JsonSchema\Type\ArrayType;
 use EventEngine\JsonSchema\Type\BoolType;
@@ -25,6 +15,16 @@ use EventEngine\JsonSchema\Type\StringEnumType;
 use EventEngine\JsonSchema\Type\StringType;
 use EventEngine\JsonSchema\Type\TypeRef;
 use PHPUnit\Framework\TestCase;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
+use TeamBlue\JsonImmutableObjects\Tests\Object\RandomClass;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Bool\TestBool;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\IntEnum;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\StringEnum;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Float\TestFloat;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Int\TestInt;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\List\TestList;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\List\TestListImmutable;
+use TeamBlue\JsonImmutableObjects\TypeDetector;
 
 /** @SuppressWarnings(PHPMD.CouplingBetweenObjects) */
 class TypeDetectorTest extends TestCase

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object\ValueObject\Enum;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum;
 
 use ADS\ValueObjects\Implementation\Enum\StringEnumValue;
 

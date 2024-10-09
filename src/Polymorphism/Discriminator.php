@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Polymorphism;
+namespace TeamBlue\JsonImmutableObjects\Polymorphism;
 
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;

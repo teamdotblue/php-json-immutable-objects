@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\MetadataExtractor;
+namespace TeamBlue\JsonImmutableObjects\MetadataExtractor;
 
 use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\JsonSchemaAwareCollection;

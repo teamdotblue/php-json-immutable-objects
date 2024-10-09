@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
-use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
+use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 
 class OneOfWithDiscriminatorTwo implements JsonSchemaAwareRecord
 {

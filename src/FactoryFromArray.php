@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects;
+namespace TeamBlue\JsonImmutableObjects;
 
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
-use ADS\JsonImmutableObjects\HasPropertyExamples;
-use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
+use TeamBlue\JsonImmutableObjects\HasPropertyExamples;
+use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 
 class TestObject implements JsonSchemaAwareRecord, HasPropertyExamples
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Exception\EncryptDecrypt;
+namespace TeamBlue\JsonImmutableObjects\Exception\EncryptDecrypt;
 
 use function sprintf;
 

@@ -5,7 +5,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects;
+namespace TeamBlue\JsonImmutableObjects;
 
 use ADS\Util\ArrayUtil;
 use ADS\Util\ScalarUtil;

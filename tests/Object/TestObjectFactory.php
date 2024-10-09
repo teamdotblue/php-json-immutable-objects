@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
-use ADS\JsonImmutableObjects\FactoryFromArray;
+use TeamBlue\JsonImmutableObjects\FactoryFromArray;
 
 class TestObjectFactory
 {

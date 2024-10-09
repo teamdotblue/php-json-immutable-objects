@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
 class RandomClass
 {

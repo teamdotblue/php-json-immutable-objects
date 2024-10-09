@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Encryption;
+namespace TeamBlue\JsonImmutableObjects\Encryption;
 
-use ADS\JsonImmutableObjects\Exception\EncryptDecrypt\DecryptionFailedException;
-use ADS\JsonImmutableObjects\Exception\EncryptDecrypt\NoSecretKeyFoundException;
-use ADS\JsonImmutableObjects\Exception\EncryptDecrypt\SecretKeyNotRequiredLengthException;
+use TeamBlue\JsonImmutableObjects\Exception\EncryptDecrypt\DecryptionFailedException;
+use TeamBlue\JsonImmutableObjects\Exception\EncryptDecrypt\NoSecretKeyFoundException;
+use TeamBlue\JsonImmutableObjects\Exception\EncryptDecrypt\SecretKeyNotRequiredLengthException;
 use Throwable;
 
 use function base64_decode;
@@ -28,7 +28,11 @@ use const SODIUM_CRYPTO_SECRETBOX_KEYBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_MACBYTES;
 use const SODIUM_CRYPTO_SECRETBOX_NONCEBYTES;
 
-/** @see https://stackoverflow.com/questions/34477643/how-to-encrypt-decrypt-aes-with-libsodium-php */
+/**
+ * @see https://stackoverflow.com/questions/34477643/how-to-encrypt-decrypt-aes-with-libsodium-php
+ *
+ * @SuppressWarnings(PHPMD.Superglobals)
+ */
 final class EncryptDecryptService
 {
     public const ENVIRONMENT_SECRET_KEY_KEY = 'ADS_SECRET_KEY';

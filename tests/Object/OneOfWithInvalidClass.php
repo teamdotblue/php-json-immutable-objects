@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
-use ADS\JsonImmutableObjects\Polymorphism\Discriminator;
-use ADS\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;
+use TeamBlue\JsonImmutableObjects\Polymorphism\Discriminator;
+use TeamBlue\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;
 
 class OneOfWithInvalidClass implements Discriminator
 {

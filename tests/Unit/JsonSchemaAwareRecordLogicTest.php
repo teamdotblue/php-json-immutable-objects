@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Unit;
+namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
-use ADS\JsonImmutableObjects\Tests\Object\TestObject;
-use ADS\JsonImmutableObjects\Tests\Object\TestObjectWithArrayAsArrayPropItem;
-use ADS\JsonImmutableObjects\Tests\Object\TestObjectWithInvalidDefaultProperties;
-use ADS\JsonImmutableObjects\Tests\Object\TestObjectWithNotListedArrayPropItem;
-use ADS\JsonImmutableObjects\Tests\Object\TestObjectWithSpecialKeySupport;
-use ADS\JsonImmutableObjects\Tests\Object\TestStringVO;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObject;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithArrayAsArrayPropItem;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithInvalidDefaultProperties;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithNotListedArrayPropItem;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithSpecialKeySupport;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestStringVO;
 
 use function json_decode;
 use function json_encode;

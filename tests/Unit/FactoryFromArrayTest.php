@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Unit;
+namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
-use ADS\JsonImmutableObjects\Tests\Object\TestObject;
-use ADS\JsonImmutableObjects\Tests\Object\TestObjectFactory;
 use PHPUnit\Framework\TestCase;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObject;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectFactory;
 
 class FactoryFromArrayTest extends TestCase
 {

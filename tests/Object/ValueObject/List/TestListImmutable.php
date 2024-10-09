@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object\ValueObject\List;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\List;
 
-use ADS\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
 use ADS\ValueObjects\Implementation\ListValue\JsonSchemaAwareCollectionLogic;
 use ADS\ValueObjects\Implementation\ListValue\ListValue;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
 
 /** @extends ListValue<TestImmutable> */
 class TestListImmutable extends ListValue

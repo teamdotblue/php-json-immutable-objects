@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object\ValueObject\Float;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Float;
 
 use ADS\ValueObjects\Implementation\Float\FloatValue;
 

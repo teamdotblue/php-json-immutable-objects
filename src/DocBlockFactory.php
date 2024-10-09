@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects;
+namespace TeamBlue\JsonImmutableObjects;
 
 use ADS\Util\StringUtil;
 use phpDocumentor\Reflection\DocBlock;

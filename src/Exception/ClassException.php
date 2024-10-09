@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Exception;
+namespace TeamBlue\JsonImmutableObjects\Exception;
 
 use Exception;
 

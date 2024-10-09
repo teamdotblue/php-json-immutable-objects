@@ -5,17 +5,18 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects;
+namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\JsonImmutableObjects\Attribute\SensitiveData;
-use ADS\JsonImmutableObjects\Encryption\EncryptDecryptService;
 use ADS\ValueObjects\SensitiveValue;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\Data\SpecialKeySupport;
 use InvalidArgumentException;
 use ReflectionClass;
 use ReflectionNamedType;
+use ReflectionProperty;
 use RuntimeException;
+use TeamBlue\JsonImmutableObjects\Attribute\SensitiveData;
+use TeamBlue\JsonImmutableObjects\Encryption\EncryptDecryptService;
 
 use function array_key_exists;
 use function array_map;
@@ -51,32 +52,32 @@ trait ImmutableRecordLogic
 
         foreach ($propTypeMap as $key => &$value) {
             $reflectionProperty = $reflectionClass->getProperty($key);
-            $sensitiveDataAttributes = $reflectionProperty->getAttributes(SensitiveData::class);
-
-            if (! empty($sensitiveDataAttributes)) {
-                array_push($value, true); // isSensitive = true
-                continue;
-            }
-
-            $type = $reflectionProperty->getType();
-
-            if (! $type instanceof ReflectionNamedType) {
-                array_push($value, false); // isSensitive = false
-                continue;
-            }
-
-            $typeClass = $type->getName();
-
-            array_push(
-                $value,
-                class_exists($typeClass)
-                && (new ReflectionClass($typeClass))->implementsInterface(SensitiveValue::class),
-            );
+            array_push($value, self::isPropertySensitive($reflectionProperty));
         }
 
         unset($propTypeMap['__encryptedSensitiveData']);
 
         return $propTypeMap;
+    }
+
+    private static function isPropertySensitive(ReflectionProperty $reflectionProperty): bool
+    {
+        $sensitiveDataAttributes = $reflectionProperty->getAttributes(SensitiveData::class);
+
+        if (! empty($sensitiveDataAttributes)) {
+            return true;
+        }
+
+        $type = $reflectionProperty->getType();
+
+        if (! $type instanceof ReflectionNamedType) {
+            return false;
+        }
+
+        $typeClass = $type->getName();
+
+        return class_exists($typeClass)
+            && (new ReflectionClass($typeClass))->implementsInterface(SensitiveValue::class);
     }
 
     /**

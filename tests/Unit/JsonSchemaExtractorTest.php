@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Unit;
+namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
-use ADS\JsonImmutableObjects\MetadataExtractor\JsonSchemaExtractor;
-use ADS\JsonImmutableObjects\Tests\Object\Immutable\TestCollection;
-use ADS\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
 use EventEngine\JsonSchema\Type\ArrayType;
 use EventEngine\JsonSchema\Type\ObjectType;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use TeamBlue\JsonImmutableObjects\MetadataExtractor\JsonSchemaExtractor;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Immutable\TestCollection;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
 
 class JsonSchemaExtractorTest extends TestCase
 {
@@ -56,7 +56,7 @@ class JsonSchemaExtractorTest extends TestCase
     public function testNonExistingSchemaExtractor(): void
     {
         $this->expectExceptionMessage(
-            'No schema found for message \'ADS\JsonImmutableObjects\MetadataExtractor\JsonSchemaExtractor\'. ' .
+            'No schema found for message \'TeamBlue\JsonImmutableObjects\MetadataExtractor\JsonSchemaExtractor\'. ' .
             'Implement the JsonSchemaAwareRecord or JsonSchemaAwareCollection interface.',
         );
 

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Unit;
+namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
-use ADS\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminator;
-use ADS\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorOne;
-use ADS\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorTwo;
-use ADS\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClass;
-use ADS\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClassType;
-use ADS\JsonImmutableObjects\Tests\Object\TypeVO;
 use EventEngine\JsonSchema\Type\UnionType;
 use PHPUnit\Framework\TestCase;
+use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminator;
+use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorOne;
+use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorTwo;
+use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClass;
+use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClassType;
+use TeamBlue\JsonImmutableObjects\Tests\Object\TypeVO;
 
 class PolymorphismTest extends TestCase
 {

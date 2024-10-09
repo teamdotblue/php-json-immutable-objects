@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object;
 
-use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use EventEngine\Data\SpecialKeySupport;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
+use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 
 class TestObjectWithSpecialKeySupport implements JsonSchemaAwareRecord, SpecialKeySupport
 {

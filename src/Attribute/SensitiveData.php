@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Attribute;
+namespace TeamBlue\JsonImmutableObjects\Attribute;
 
 use Attribute;
 

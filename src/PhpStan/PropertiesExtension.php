@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\PhpStan;
+namespace TeamBlue\JsonImmutableObjects\PhpStan;
 
 use EventEngine\Data\ImmutableRecord;
 use PHPStan\Reflection\PropertyReflection;

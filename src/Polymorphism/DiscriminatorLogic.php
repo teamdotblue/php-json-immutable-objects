@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Polymorphism;
+namespace TeamBlue\JsonImmutableObjects\Polymorphism;
 
-use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
@@ -14,6 +13,7 @@ use EventEngine\Schema\TypeSchema;
 use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
+use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 
 use function array_combine;
 use function array_filter;

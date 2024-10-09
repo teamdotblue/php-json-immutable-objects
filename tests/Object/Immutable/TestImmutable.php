@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ADS\JsonImmutableObjects\Tests\Object\Immutable;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object\Immutable;
 
 use ADS\ValueObjects\HasExamples;
 use ADS\ValueObjects\Implementation\ExamplesLogic;
