@@ -20,6 +20,6 @@ class JsonImmutableObjectsBundle extends AbstractBundle
             new FileLocator(__DIR__ . '/Resources/config'),
         );
 
-        $loader->load('ads_json_immutable_objects.yaml');
+        $loader->load('php_json_immutable_objects.yaml');
     }
 }
