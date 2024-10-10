@@ -160,7 +160,11 @@ trait JsonSchemaAwareRecordLogic
      */
     public static function defaultProperties(): array
     {
-        $propertyNames     = array_keys(self::buildPropTypeMap());
+        if (self::$__propTypeMap === null) {
+            self::$__propTypeMap = self::buildPropTypeMap();
+        }
+
+        $propertyNames     = array_keys(self::$__propTypeMap);
         $defaultProperties = self::__defaultProperties();
 
         return array_filter(
