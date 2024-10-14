@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\Util\ValueObjectUtil;
-use ADS\ValueObjects\SensitiveValue;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\Data\SpecialKeySupport;
 use InvalidArgumentException;
@@ -19,6 +17,8 @@ use ReflectionProperty;
 use RuntimeException;
 use TeamBlue\JsonImmutableObjects\Attribute\SensitiveData;
 use TeamBlue\JsonImmutableObjects\Encryption\EncryptDecryptService;
+use TeamBlue\Util\ValueObjectUtil;
+use TeamBlue\ValueObjects\SensitiveValue;
 
 use function array_intersect_key;
 use function array_key_exists;

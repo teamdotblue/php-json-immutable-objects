@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects\Tests\Object\Immutable;
 
-use ADS\ValueObjects\Implementation\ListValue\JsonSchemaAwareCollectionLogic;
 use EventEngine\JsonSchema\JsonSchemaAwareCollection;
+use TeamBlue\ValueObjects\Implementation\ListValue\JsonSchemaAwareCollectionLogic;
 
 class TestCollection implements JsonSchemaAwareCollection
 {

@@ -7,9 +7,6 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\Util\ArrayUtil;
-use ADS\Util\ScalarUtil;
-use ADS\Util\ValueObjectUtil;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\Data\SpecialKeySupport;
 use EventEngine\JsonSchema\AnnotatedType;
@@ -22,6 +19,9 @@ use ReflectionException;
 use ReflectionProperty;
 use RuntimeException;
 use Symfony\Component\Yaml\Yaml;
+use TeamBlue\Util\ArrayUtil;
+use TeamBlue\Util\ScalarUtil;
+use TeamBlue\Util\ValueObjectUtil;
 
 use function array_diff_key;
 use function array_filter;
