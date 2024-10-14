@@ -17,7 +17,6 @@ use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\Type;
 use EventEngine\JsonSchema\Type\ObjectType;
 use InvalidArgumentException;
-use LogicException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
@@ -30,13 +29,11 @@ use function array_flip;
 use function array_intersect_key;
 use function array_key_exists;
 use function array_keys;
-use function array_map;
 use function array_merge;
 use function assert;
 use function count;
 use function in_array;
 use function is_array;
-use function is_string;
 use function json_decode;
 use function json_encode;
 use function method_exists;
@@ -52,84 +49,11 @@ trait JsonSchemaAwareRecordLogic
     use ImmutableRecordLogic {
         ImmutableRecordLogic::fromType insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::voTypeToNative insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
-        ImmutableRecordLogic::setRecordData as parentSetRecordData;
-        ImmutableRecordLogic::setNativeData as parentSetNativeData;
         ImmutableRecordLogic::buildPropTypeMap as parentImmutableRecordBuildPropTypeMap;
     }
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static bool $__useMaxValues = false;
-
-    /**
-     * Convert value objects to native data
-     * Filter out the not allowed properties.
-     * Convert the keys to camel case.
-     * And set the default properties.
-     *
-     * @param array<string, mixed> $nativeData
-     */
-    private function setNativeData(array $nativeData): void
-    {
-        assert(is_array(self::$__propTypeMap));
-
-        $nativeData = array_map(
-            static fn ($value) => ValueObjectUtil::toScalar($value) ?? $value,
-            $nativeData,
-        );
-
-        // Filter not allowed properties.
-        $filteredNativeData = array_intersect_key(
-            $this->convertKeys($nativeData),
-            self::$__propTypeMap,
-        );
-
-        $this->parentSetNativeData($filteredNativeData);
-        $this->addDefaultProperties();
-    }
-
-    /**
-     * Filter out the not allowed properties
-     * Convert the keys to camel case.
-     * And set the default properties.
-     *
-     * @param array<string, mixed> $recordData
-     */
-    private function setRecordData(array $recordData): void
-    {
-        assert(is_array(self::$__propTypeMap));
-
-        $filteredRecordData = array_intersect_key(
-            $this->convertKeys($recordData),
-            self::$__propTypeMap,
-        );
-
-        $this->parentSetRecordData($filteredRecordData);
-        $this->addDefaultProperties();
-    }
-
-    private function addDefaultProperties(): void
-    {
-        $defaultProperties = self::__defaultProperties();
-
-        foreach ($defaultProperties as $property => $defaultValue) {
-            if (! is_string($property)) {
-                throw new LogicException(
-                    sprintf(
-                        'The __defaultProperties method from \'%s\', should be an associative array' .
-                        'where the key is the property and the value is the default value. Found key \'%d\'.',
-                        static::class,
-                        $property,
-                    ),
-                );
-            }
-
-            if (isset($this->{$property})) {
-                continue;
-            }
-
-            $this->{$property} = $defaultValue;
-        }
-    }
 
     /**
      * @param array<string, mixed> $data

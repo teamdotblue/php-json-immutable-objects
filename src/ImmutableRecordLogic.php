@@ -7,10 +7,12 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
+use ADS\Util\ValueObjectUtil;
 use ADS\ValueObjects\SensitiveValue;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\Data\SpecialKeySupport;
 use InvalidArgumentException;
+use LogicException;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionProperty;
@@ -18,11 +20,15 @@ use RuntimeException;
 use TeamBlue\JsonImmutableObjects\Attribute\SensitiveData;
 use TeamBlue\JsonImmutableObjects\Encryption\EncryptDecryptService;
 
+use function array_intersect_key;
 use function array_key_exists;
 use function array_map;
 use function array_push;
+use function assert;
 use function class_exists;
 use function gettype;
+use function is_array;
+use function is_string;
 use function method_exists;
 use function sprintf;
 
@@ -32,6 +38,7 @@ trait ImmutableRecordLogic
     use \EventEngine\Data\ImmutableRecordLogic {
         fromArray as parentFromArray;
         setNativeData as baseSetNativeData;
+        setRecordData as baseSetRecordData;
         voTypeToNative as parentVoTypeToNative;
         fromType as parentFromType;
         buildPropTypeMap as parentBuildPropTypeMap;
@@ -39,6 +46,11 @@ trait ImmutableRecordLogic
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static bool $__encryptedSensitiveData = false;
+
+    private function init(): void
+    {
+        $this->addDefaultProperties();
+    }
 
     /**
      * Unset __encryptedSensitiveData and add extra bool to prop type map for sensitive parameters.
@@ -81,12 +93,29 @@ trait ImmutableRecordLogic
     }
 
     /**
+     * Convert value objects to native data
+     * Filter out the not allowed properties.
+     * Convert the keys to camel case.
+     *
      * Decrypt sensitive data before setting the native data.
      *
      * @param array<string, mixed> $nativeData
      */
     private function setNativeData(array $nativeData): void
     {
+        assert(is_array(self::$__propTypeMap));
+
+        $nativeData = array_map(
+            static fn ($value) => ValueObjectUtil::toScalar($value) ?? $value,
+            $nativeData,
+        );
+
+        // Filter not allowed properties.
+        $filteredNativeData = array_intersect_key(
+            $this->convertKeys($nativeData),
+            self::$__propTypeMap,
+        );
+
         if (! self::$__encryptedSensitiveData) {
             $this->baseSetNativeData($nativeData);
 
@@ -96,7 +125,7 @@ trait ImmutableRecordLogic
         $recordData = [];
         $arrayPropItemTypeMap = self::getArrayPropItemTypeMapFromMethodOrCache();
 
-        foreach ($nativeData as $key => $val) {
+        foreach ($filteredNativeData as $key => $val) {
             $specialKey = $key;
 
             if ($this instanceof SpecialKeySupport) {
@@ -157,6 +186,48 @@ trait ImmutableRecordLogic
         }
 
         $this->setRecordData($recordData);
+    }
+
+    /**
+     * Filter out the not allowed properties
+     * Convert the keys to camel case.
+     *
+     * @param array<string, mixed> $recordData
+     */
+    private function setRecordData(array $recordData): void
+    {
+        assert(is_array(self::$__propTypeMap));
+
+        $filteredRecordData = array_intersect_key(
+            $this->convertKeys($recordData),
+            self::$__propTypeMap,
+        );
+
+        $this->baseSetRecordData($filteredRecordData);
+    }
+
+    private function addDefaultProperties(): void
+    {
+        $defaultProperties = self::__defaultProperties();
+
+        foreach ($defaultProperties as $property => $defaultValue) {
+            if (! is_string($property)) {
+                throw new LogicException(
+                    sprintf(
+                        'The __defaultProperties method from \'%s\', should be an associative array' .
+                        'where the key is the property and the value is the default value. Found key \'%d\'.',
+                        static::class,
+                        $property,
+                    ),
+                );
+            }
+
+            if (isset($this->{$property})) {
+                continue;
+            }
+
+            $this->{$property} = $defaultValue;
+        }
     }
 
     private function fromType(mixed $value, string $type): mixed
