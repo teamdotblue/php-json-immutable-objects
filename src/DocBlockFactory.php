@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\Util\StringUtil;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlockFactory as PhpDocumentorDocBlockFactory;
+use TeamBlue\Util\StringUtil;
 use Throwable;
 
 use function array_filter;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
-use ADS\Util\ScalarUtil;
 use DateTime;
 use EventEngine\JsonSchema\AnnotatedType;
 use EventEngine\JsonSchema\JsonSchema;
@@ -14,6 +13,7 @@ use EventEngine\JsonSchema\ProvidesValidationRules;
 use EventEngine\JsonSchema\Type;
 use EventEngine\JsonSchema\Type\StringType;
 use TeamBlue\JsonImmutableObjects\Exception\ClassException;
+use TeamBlue\Util\ScalarUtil;
 
 use function array_map;
 use function class_exists;
@@ -96,14 +96,14 @@ final class TypeDetector
 
         if (
             ! $implementations
-            || ! in_array('ADS\ValueObjects\EnumValue', $implementations)
+            || ! in_array('TeamBlue\ValueObjects\EnumValue', $implementations)
             || ! method_exists($class, 'possibleValues')
         ) {
             return null;
         }
 
         $possibleValues = $class::possibleValues();
-        $type = $parentClasses && in_array('ADS\ValueObjects\Implementation\Enum\StringEnumValue', $parentClasses)
+        $type = $parentClasses && in_array('TeamBlue\ValueObjects\Implementation\Enum\StringEnumValue', $parentClasses)
             ? JsonSchema::TYPE_STRING
             : JsonSchema::TYPE_INT;
 
@@ -119,21 +119,21 @@ final class TypeDetector
             return null;
         }
 
-        if (in_array('ADS\ValueObjects\BoolValue', $implementations)) {
+        if (in_array('TeamBlue\ValueObjects\BoolValue', $implementations)) {
             return JsonSchema::boolean();
         }
 
         $validationRules = self::validationRulesFromClass($class);
 
-        if (in_array('ADS\ValueObjects\StringValue', $implementations)) {
+        if (in_array('TeamBlue\ValueObjects\StringValue', $implementations)) {
             return JsonSchema::string($validationRules);
         }
 
-        if (in_array('ADS\ValueObjects\IntValue', $implementations)) {
+        if (in_array('TeamBlue\ValueObjects\IntValue', $implementations)) {
             return JsonSchema::integer($validationRules);
         }
 
-        if (in_array('ADS\ValueObjects\FloatValue', $implementations)) {
+        if (in_array('TeamBlue\ValueObjects\FloatValue', $implementations)) {
             return JsonSchema::float($validationRules);
         }
 
@@ -185,7 +185,7 @@ final class TypeDetector
 
         if (
             ! $implementations
-            || ! in_array('ADS\ValueObjects\HasDefault', $implementations)
+            || ! in_array('TeamBlue\ValueObjects\HasDefault', $implementations)
             || ! method_exists($class, 'defaultValue')
         ) {
             return $type;
@@ -201,7 +201,7 @@ final class TypeDetector
 
         if (
             ! $implementations
-            || ! in_array('ADS\ValueObjects\HasExamples', $implementations)
+            || ! in_array('TeamBlue\ValueObjects\HasExamples', $implementations)
             || ! method_exists($class, 'examples')
         ) {
             return $type;
