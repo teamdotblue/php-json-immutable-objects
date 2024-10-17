@@ -117,7 +117,7 @@ trait ImmutableRecordLogic
         );
 
         if (! self::$__encryptedSensitiveData) {
-            $this->baseSetNativeData($nativeData);
+            $this->baseSetNativeData($filteredNativeData);
 
             return;
         }
