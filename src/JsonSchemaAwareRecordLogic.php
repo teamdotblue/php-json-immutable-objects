@@ -52,6 +52,7 @@ trait JsonSchemaAwareRecordLogic
         ImmutableRecordLogic::setNativeData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setRecordData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::buildPropTypeMap as parentImmutableRecordBuildPropTypeMap;
+        ImmutableRecordLogic::init as immutableInit;
     }
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -330,6 +331,8 @@ trait JsonSchemaAwareRecordLogic
 
     private function init(): void
     {
+        $this->immutableInit();
+
         assert(is_array(self::$__propTypeMap));
 
         // phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
