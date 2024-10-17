@@ -6,7 +6,7 @@ declare(strict_types=1);
 // phpcs:ignore
 include $_composer_autoload_path ?? __DIR__ . '/../vendor/autoload.php';
 
-use ADS\JsonImmutableObjects\Encryption\EncryptDecryptService;
+use TeamBlue\JsonImmutableObjects\Encryption\EncryptDecryptService;
 
 $allowedTypes = ['encrypt', 'decrypt'];
 
