@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace TeamBlue\JsonImmutableObjects;
 
 use EventEngine\Data\ImmutableRecord;
-use EventEngine\Data\SpecialKeySupport;
 use EventEngine\JsonSchema\AnnotatedType;
 use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\Type;
@@ -19,7 +18,6 @@ use ReflectionException;
 use ReflectionProperty;
 use RuntimeException;
 use Symfony\Component\Yaml\Yaml;
-use TeamBlue\Util\ArrayUtil;
 use TeamBlue\Util\ScalarUtil;
 use TeamBlue\Util\ValueObjectUtil;
 
@@ -57,28 +55,6 @@ trait JsonSchemaAwareRecordLogic
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static bool $__useMaxValues = false;
-
-    /**
-     * @param array<string, mixed> $data
-     *
-     * @return array<string, mixed>
-     */
-    private function convertKeys(array $data): array
-    {
-        /** @var array<string, mixed> $data */
-        $data = ArrayUtil::toCamelCasedKeys($data); // todo remove and use SpecialKeySupport
-
-        if (! $this instanceof SpecialKeySupport) {
-            return $data;
-        }
-
-        $dataWithConvertedKeys = [];
-        foreach ($data as $key => $value) {
-            $dataWithConvertedKeys[$this->convertKeyForRecord($key)] = $value;
-        }
-
-        return $dataWithConvertedKeys;
-    }
 
     /**
      * Combine the __defaultProperties method with the php properties that have a default value.
