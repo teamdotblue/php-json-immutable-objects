@@ -249,12 +249,6 @@ trait JsonSchemaAwareRecordLogic
             : TypeDetector::typeFromClassAsReference($classOrType);
     }
 
-    /** @return array<string, mixed> */
-    public static function __defaultProperties(): array
-    {
-        return [];
-    }
-
     private static function __allowNestedSchema(): bool
     {
         return true;

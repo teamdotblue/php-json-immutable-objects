@@ -253,6 +253,12 @@ trait ImmutableRecordLogic
         }
     }
 
+    /** @return array<string, mixed> */
+    public static function __defaultProperties(): array
+    {
+        return [];
+    }
+
     private function fromType(mixed $value, string $type): mixed
     {
         if (self::$__encryptedSensitiveData && gettype($value) === 'array' && class_exists($type)) {
