@@ -68,5 +68,8 @@
             "vendor/bin/rector --dry-run --no-progress-bar",
             "vendor/bin/phpunit"
         ]
-    }
+    },
+    "bin": [
+        "bin/team-blue-jio-encrypt-decrypt.php"
+    ]
 }
