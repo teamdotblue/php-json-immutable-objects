@@ -5,12 +5,3 @@ services:
 
     TeamBlue\JsonImmutableObjects\MetadataExtractor\:
         resource: '../../../src/MetadataExtractor/*'
-
-    api_platform.action.exception:
-        class: TeamBlue\Exception\Controller\ExceptionAction
-        public: true
-        arguments:
-            - '@serializer'
-            - '%api_platform.error_formats%'
-            - '%api_platform.exception_to_status%'
-            - '@api_platform.metadata.resource.metadata_collection_factory.cached'

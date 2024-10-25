@@ -17,6 +17,7 @@ use ReflectionProperty;
 use RuntimeException;
 use TeamBlue\JsonImmutableObjects\Attribute\SensitiveData;
 use TeamBlue\JsonImmutableObjects\Encryption\EncryptDecryptService;
+use TeamBlue\Util\ArrayUtil;
 use TeamBlue\Util\ValueObjectUtil;
 use TeamBlue\ValueObjects\SensitiveValue;
 
@@ -204,6 +205,28 @@ trait ImmutableRecordLogic
         );
 
         $this->baseSetRecordData($filteredRecordData);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     *
+     * @return array<string, mixed>
+     */
+    private function convertKeys(array $data): array
+    {
+        /** @var array<string, mixed> $data */
+        $data = ArrayUtil::toCamelCasedKeys($data); // todo remove and use SpecialKeySupport
+
+        if (! $this instanceof SpecialKeySupport) {
+            return $data;
+        }
+
+        $dataWithConvertedKeys = [];
+        foreach ($data as $key => $value) {
+            $dataWithConvertedKeys[$this->convertKeyForRecord($key)] = $value;
+        }
+
+        return $dataWithConvertedKeys;
     }
 
     private function addDefaultProperties(): void
