@@ -71,5 +71,10 @@
     },
     "bin": [
         "bin/team-blue-jio-encrypt-decrypt.php"
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-feature/test-branch-alias": "0.5.x-dev"
+        }
+    }
 }
