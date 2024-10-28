@@ -16,6 +16,7 @@ use function array_map;
 use function assert;
 use function implode;
 
+/** Test change */
 class DocBlockFactory
 {
     public static function summaryAndDescription(object $object, string $separator = '<br/>'): string|null
