@@ -76,5 +76,8 @@
         "branch-alias": {
             "hotfix/discriminator-logic-with-camel-cased-keys": "0.5.13-dev"
         }
+    },
+    "conflict": {
+        "arnedesmedt/json-immutable-objects": "*"
     }
 }
