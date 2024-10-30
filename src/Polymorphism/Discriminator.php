@@ -20,6 +20,7 @@ interface Discriminator extends JsonSchemaAwareRecord
 
     public function value(): ImmutableRecord;
 
+    /** Use a camel cased string for the property */
     public static function propertyName(): string;
 
     /** @return array<string, class-string<JsonSchemaAwareRecord>> */

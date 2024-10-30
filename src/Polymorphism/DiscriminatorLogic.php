@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
 use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
+use TeamBlue\Util\ArrayUtil;
 
 use function array_combine;
 use function array_filter;
@@ -96,6 +97,8 @@ trait DiscriminatorLogic
     /** @param array<string, mixed> $data */
     private static function propertyValue(array $data): string
     {
+        $data = ArrayUtil::toCamelCasedKeys($data);
+
         if (! isset($data[static::propertyName()])) {
             throw new InvalidArgumentException(
                 sprintf(
