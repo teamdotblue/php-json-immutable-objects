@@ -48,9 +48,26 @@ trait ImmutableRecordLogic
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private static bool $__encryptedSensitiveData = false;
 
+    /** Ensure the $__propTypeMap has been set after deserialization */
+    public function __wakeup(): void
+    {
+        self::initPropTypeMap();
+    }
+
     private function init(): void
     {
         $this->addDefaultProperties();
+
+        self::initPropTypeMap();
+    }
+
+    protected static function initPropTypeMap(): void
+    {
+        if (self::$__propTypeMap !== null) {
+            return;
+        }
+
+        self::$__propTypeMap = self::buildPropTypeMap();
     }
 
     /**

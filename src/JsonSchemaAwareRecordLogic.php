@@ -298,8 +298,6 @@ trait JsonSchemaAwareRecordLogic
     {
         $this->immutableInit();
 
-        self::initPropTypeMap();
-
         // phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
         foreach (self::$__propTypeMap as $key => [$type, $isNative, $isNullable]) {
             if ($isNative || isset($this->{$key})) {
@@ -380,17 +378,4 @@ trait JsonSchemaAwareRecordLogic
      * phpcs:disable
      */
     private static $__schema;
-
-    private static function initPropTypeMap(): void
-    {
-        if (null === self::$__propTypeMap) {
-            self::$__propTypeMap = self::buildPropTypeMap();
-        }
-    }
-
-    /** Ensure the $__propTypeMap has been set after deserialization */
-    public function __wakeup(): void
-    {
-        $this->init();
-    }
 }
