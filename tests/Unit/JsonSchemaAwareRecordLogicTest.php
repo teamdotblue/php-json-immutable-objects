@@ -13,8 +13,13 @@ use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithNotListedArrayPropI
 use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithSpecialKeySupport;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TestStringVO;
 
+use function dirname;
+use function file_get_contents;
+use function file_put_contents;
 use function json_decode;
 use function json_encode;
+use function serialize;
+use function unserialize;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -193,5 +198,49 @@ class JsonSchemaAwareRecordLogicTest extends TestCase
     {
         $test = TestObject::fromYaml(Yaml::dump($this->objectDataPlain()));
         $this->assertInstanceOf(TestObject::class, $test);
+    }
+
+    private function getPathForFileCachedTestObject(): string
+    {
+        return dirname(__DIR__) . '/data/cached-test-object.txt';
+    }
+
+    public function testUpsertCachedTestObjectFile(): void
+    {
+        $this->markTestSkipped('We only want to run this test manually to update the file, ' .
+            'comment this line and run your test locally to easily update the cached file.');
+
+        // @phpstan-ignore deadCode.unreachable
+        file_put_contents(
+            $this->getPathForFileCachedTestObject(),
+            serialize($this->objectToTest()),
+        );
+
+        $this->testCachedTestObjectStillEqualsRealObject();
+    }
+
+    public function testCachedTestObjectStillEqualsRealObject(): void
+    {
+        $this->assertStringEqualsFile(
+            $this->getPathForFileCachedTestObject(),
+            serialize($this->objectToTest()),
+        );
+    }
+
+    /**
+     * This only occurs when the object itself has never been initialized.
+     * Then the static property $__propTypeMap won't be set.
+     * This specifically occurs when using a file based (serialized) cache
+     */
+    public function testSerializeObjectCanBeDeserializedFromCachedFile(): void
+    {
+        $cachedSerializedObject = file_get_contents(
+            $this->getPathForFileCachedTestObject(),
+        );
+        $this->assertIsString($cachedSerializedObject);
+        $cachedObject = unserialize($cachedSerializedObject);
+
+        $this->assertInstanceOf(TestObject::class, $cachedObject);
+        $this->assertNotEmpty($cachedObject->toArray());
     }
 }
