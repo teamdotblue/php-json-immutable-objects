@@ -13,7 +13,7 @@ class OneOfWithCamelCasedDiscriminator implements Discriminator
 
     public static function propertyName(): string
     {
-        return 'myType';
+        return 'my_type';
     }
 
     /** @inheritDoc */
