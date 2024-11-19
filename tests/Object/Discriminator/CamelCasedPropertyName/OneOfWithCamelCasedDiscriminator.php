@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Discriminator\CamelCasedPropertyName;
+namespace TeamBlue\JsonImmutableObjects\Tests\Object\Discriminator\CamelCasedPropertyName;
 
 use TeamBlue\JsonImmutableObjects\Polymorphism\Discriminator;
 use TeamBlue\JsonImmutableObjects\Polymorphism\DiscriminatorLogic;

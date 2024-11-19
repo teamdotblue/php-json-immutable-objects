@@ -6,15 +6,16 @@ namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
 use EventEngine\JsonSchema\Type\UnionType;
 use PHPUnit\Framework\TestCase;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Discriminator\CamelCasedPropertyName\DiscriminatorItemOne;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Discriminator\CamelCasedPropertyName\OneOfWithCamelCasedDiscriminator;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminator;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorOne;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorTwo;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClass;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClassType;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TypeVO;
-use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Discriminator\CamelCasedPropertyName\DiscriminatorItemOne;
+
 //phpcs:ignore Generic.Files.LineLength.TooLong
-use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Discriminator\CamelCasedPropertyName\OneOfWithCamelCasedDiscriminator;
 
 class PolymorphismTest extends TestCase
 {
