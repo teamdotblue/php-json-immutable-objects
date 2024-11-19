@@ -57,8 +57,6 @@ trait ImmutableRecordLogic
     private function init(): void
     {
         $this->addDefaultProperties();
-
-        self::initPropTypeMap();
     }
 
     protected static function initPropTypeMap(): void
