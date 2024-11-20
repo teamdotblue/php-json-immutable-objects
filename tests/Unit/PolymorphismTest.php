@@ -6,12 +6,16 @@ namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
 use EventEngine\JsonSchema\Type\UnionType;
 use PHPUnit\Framework\TestCase;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Discriminator\CamelCasedPropertyName\DiscriminatorItemOne;
+use TeamBlue\JsonImmutableObjects\Tests\Object\Discriminator\CamelCasedPropertyName\OneOfWithCamelCasedDiscriminator;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminator;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorOne;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorTwo;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClass;
 use TeamBlue\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClassType;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TypeVO;
+
+//phpcs:ignore Generic.Files.LineLength.TooLong
 
 class PolymorphismTest extends TestCase
 {
@@ -161,5 +165,18 @@ class PolymorphismTest extends TestCase
                 'other' => 'test2',
             ],
         );
+    }
+
+    public function testDiscriminatorWithCamelCasedPropertyName(): void
+    {
+        $object = OneOfWithCamelCasedDiscriminator::fromArray(
+            [
+                'my_type' => 'one',
+                'other' => 'oh-my',
+            ],
+        );
+
+        $this->assertInstanceOf(OneOfWithCamelCasedDiscriminator::class, $object);
+        $this->assertInstanceOf(DiscriminatorItemOne::class, $object->value());
     }
 }
