@@ -28,7 +28,6 @@ use function array_intersect_key;
 use function array_key_exists;
 use function array_keys;
 use function array_merge;
-use function assert;
 use function count;
 use function in_array;
 use function is_array;
@@ -63,9 +62,7 @@ trait JsonSchemaAwareRecordLogic
      */
     public static function defaultProperties(): array
     {
-        if (self::$__propTypeMap === null) {
-            self::$__propTypeMap = self::buildPropTypeMap();
-        }
+        self::initPropTypeMap();
 
         $propertyNames     = array_keys(self::$__propTypeMap);
         $defaultProperties = self::__defaultProperties();
@@ -93,9 +90,7 @@ trait JsonSchemaAwareRecordLogic
     /** @param array<mixed> $arrayPropTypeMap */
     private static function generateSchemaFromPropTypeMap(array $arrayPropTypeMap = []): Type\ObjectType
     {
-        if (self::$__propTypeMap === null) {
-            self::$__propTypeMap = self::buildPropTypeMap();
-        }
+        self::initPropTypeMap();
 
         //To keep BC, we cache arrayPropTypeMap internally.
         //New recommended way to provide the map is that
@@ -302,8 +297,6 @@ trait JsonSchemaAwareRecordLogic
     private function init(): void
     {
         $this->immutableInit();
-
-        assert(is_array(self::$__propTypeMap));
 
         // phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
         foreach (self::$__propTypeMap as $key => [$type, $isNative, $isNullable]) {

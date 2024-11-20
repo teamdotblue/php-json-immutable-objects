@@ -65,4 +65,22 @@ class TestObject implements JsonSchemaAwareRecord, HasPropertyExamples
             'test' => TestStringVO::fromString('test'),
         ];
     }
+
+    /**
+     * Because it is a private static property, we can't access it in our test.
+     *
+     * @return array<mixed>|null
+     */
+    public static function getPropTypeMap(): array|null
+    {
+        return self::$__propTypeMap;
+    }
+
+    /**
+     * This function is used to mimic a clean test object that has never been instantiated.
+     */
+    public static function resetPropTypeMap(): void
+    {
+        self::$__propTypeMap = null;
+    }
 }

@@ -15,6 +15,8 @@ use TeamBlue\JsonImmutableObjects\Tests\Object\TestStringVO;
 
 use function json_decode;
 use function json_encode;
+use function serialize;
+use function unserialize;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -193,5 +195,27 @@ class JsonSchemaAwareRecordLogicTest extends TestCase
     {
         $test = TestObject::fromYaml(Yaml::dump($this->objectDataPlain()));
         $this->assertInstanceOf(TestObject::class, $test);
+    }
+
+    /**
+     * This only occurs when the object itself has never been initialized.
+     * Then the static property $__propTypeMap won't be set.
+     * This specifically occurs when using a file based (serialized) cache
+     */
+    public function testSerializeObjectCanBeDeserializedIfNoPropTypeMapSet(): void
+    {
+        $object = $this->objectToTest();
+        $serializedObject = serialize($object);
+        $this->assertIsString($serializedObject);
+        $this->assertInstanceOf(TestObject::class, $object);
+        $this->assertIsArray(TestObject::getPropTypeMap());
+
+        TestObject::resetPropTypeMap();
+        $this->assertNull(TestObject::getPropTypeMap());
+
+        $deserializedObject = unserialize($serializedObject);
+        $this->assertInstanceOf(TestObject::class, $deserializedObject);
+        $this->assertIsArray(TestObject::getPropTypeMap());
+        $this->assertNotEmpty($deserializedObject->toArray());
     }
 }

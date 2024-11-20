@@ -14,6 +14,8 @@ use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
 use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
+use TeamBlue\Util\ArrayUtil;
+use TeamBlue\Util\StringUtil;
 
 use function array_combine;
 use function array_filter;
@@ -40,6 +42,11 @@ trait DiscriminatorLogic
     }
 
     private JsonSchemaAwareRecord $value;
+
+    protected static function camelCasedPropertyName(): string
+    {
+        return StringUtil::camelize(static::propertyName());
+    }
 
     public function value(): JsonSchemaAwareRecord
     {
@@ -96,17 +103,19 @@ trait DiscriminatorLogic
     /** @param array<string, mixed> $data */
     private static function propertyValue(array $data): string
     {
-        if (! isset($data[static::propertyName()])) {
+        $data = ArrayUtil::toCamelCasedKeys($data);
+
+        if (! isset($data[static::camelCasedPropertyName()])) {
             throw new InvalidArgumentException(
                 sprintf(
                     'No discriminator property \'%s\' found to generate \'%s\'.',
-                    static::propertyName(),
+                    static::camelCasedPropertyName(),
                     static::class,
                 ),
             );
         }
 
-        $propertyValue = $data[static::propertyName()];
+        $propertyValue = $data[static::camelCasedPropertyName()];
 
         if (is_string($propertyValue)) {
             return $propertyValue;
@@ -119,7 +128,7 @@ trait DiscriminatorLogic
         throw new LogicException(
             sprintf(
                 'Property \'%s\' needs to be a string as a discriminator for \'%s\'.',
-                static::propertyName(),
+                static::camelCasedPropertyName(),
                 static::class,
             ),
         );
@@ -173,7 +182,7 @@ trait DiscriminatorLogic
     /** @inheritDoc */
     public function with(array $recordData): self
     {
-        if (isset($recordData[static::propertyName()])) {
+        if (isset($recordData[static::camelCasedPropertyName()])) {
             throw new LogicException(
                 sprintf(
                     'Can\'t set the discriminator property as a key in the with function for \'%s\'.',
@@ -220,7 +229,7 @@ trait DiscriminatorLogic
 
                             return $schema->withMergedRequiredProps(
                                 [
-                                    static::propertyName() => new StringType(
+                                    static::camelCasedPropertyName() => new StringType(
                                         [
                                             StringType::ENUM => [$discriminatorValue],
                                         ],
