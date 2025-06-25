@@ -49,7 +49,7 @@ trait JsonSchemaAwareRecordLogic
         ImmutableRecordLogic::setNativeData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setRecordData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::buildPropTypeMap as parentImmutableRecordBuildPropTypeMap;
-        ImmutableRecordLogic::init as immutableInit;
+        ImmutableRecordLogic::init as immutableInitWithDefaultProperties;
     }
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -296,7 +296,7 @@ trait JsonSchemaAwareRecordLogic
 
     private function init(): void
     {
-        $this->immutableInit();
+        $this->immutableInitWithDefaultProperties();
 
         // phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
         foreach (self::$__propTypeMap as $key => [$type, $isNative, $isNullable]) {

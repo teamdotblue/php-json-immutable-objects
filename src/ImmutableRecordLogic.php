@@ -43,6 +43,7 @@ trait ImmutableRecordLogic
         voTypeToNative as parentVoTypeToNative;
         fromType as parentFromType;
         buildPropTypeMap as parentBuildPropTypeMap;
+        init as immutableRecordInit;
     }
 
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -56,6 +57,8 @@ trait ImmutableRecordLogic
 
     private function init(): void
     {
+        $this->immutableRecordInit();
+
         $this->addDefaultProperties();
     }
 
