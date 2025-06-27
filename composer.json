@@ -19,7 +19,7 @@
         "phpdocumentor/reflection-docblock": "~5.0",
         "symfony/http-kernel": "~6.0 || ~7.0",
         "symfony/yaml": "~6.0 || ~7.0",
-        "team-blue/php-value-objects": "^1.0",
+        "team-blue/php-value-objects": "^2.0",
         "team-blue/php-util": "^1.0"
     },
     "require-dev" : {
