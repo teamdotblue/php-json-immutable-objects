@@ -279,8 +279,12 @@ trait ImmutableRecordLogic
 
     private function fromType(mixed $value, string $type): mixed
     {
-        if (self::$__encryptedSensitiveData && gettype($value) === 'array' && class_exists($type)) {
-            return $type::fromEncryptedSensitiveData($value);
+        if (gettype($value) === 'array' && class_exists($type)) {
+            return match (true) {
+                self::$__encryptedSensitiveData => $type::fromEncryptedSensitiveData($value),
+                self::$__useMaxValues => $type::fromArrayWithDefaultMaxValues($value),
+                default => $this->parentFromType($value, $type),
+            };
         }
 
         return $this->parentFromType($value, $type);

@@ -30,6 +30,7 @@ use function is_string;
 use function method_exists;
 use function sprintf;
 
+// phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
 /**
  * @method static string propertyName()
  * @method static array<class-string<JsonSchemaAwareRecord>> jsonSchemaAwareRecords()
@@ -82,7 +83,13 @@ trait DiscriminatorLogic
         $propertyValue        = self::propertyValue($nativeData);
         $immutableRecordClass = self::immutableRecordClass($propertyValue);
 
-        return self::parentFromRecordData(['value' => $immutableRecordClass::fromArray($nativeData)]);
+        $value = match (true) {
+            self::$__encryptedSensitiveData => $immutableRecordClass::fromEncryptedSensitiveData($nativeData),
+            self::$__useMaxValues => $immutableRecordClass::fromArrayWithDefaultMaxValues($nativeData),
+            default => $immutableRecordClass::fromArray($nativeData),
+        };
+
+        return self::parentFromRecordData(['value' => $value]);
     }
 
     /** @inheritDoc */
