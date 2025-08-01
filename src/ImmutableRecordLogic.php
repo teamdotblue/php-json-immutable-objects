@@ -27,7 +27,6 @@ use function array_map;
 use function array_push;
 use function assert;
 use function class_exists;
-use function gettype;
 use function is_array;
 use function is_string;
 use function method_exists;
@@ -175,7 +174,7 @@ trait ImmutableRecordLogic
                 continue;
             }
 
-            if (gettype($val) === 'string' && $isSensitive) {
+            if (is_string($val) && $isSensitive) {
                 $val = EncryptDecryptService::decrypt($val);
             }
 
@@ -279,7 +278,7 @@ trait ImmutableRecordLogic
 
     private function fromType(mixed $value, string $type): mixed
     {
-        if (gettype($value) === 'array' && class_exists($type)) {
+        if (is_array($value) && class_exists($type)) {
             return match (true) {
                 self::$__encryptedSensitiveData => $type::fromEncryptedSensitiveData($value),
                 self::$__useMaxValues => $type::fromArrayWithDefaultMaxValues($value),
@@ -362,7 +361,7 @@ trait ImmutableRecordLogic
                 continue;
             }
 
-            if (gettype($nativeData[$specialKey]) !== 'string') {
+            if (! is_string($nativeData[$specialKey])) {
                 throw new RuntimeException(
                     sprintf('Sensitive data must be a string. Property \'%s\' is not a string.', $key),
                 );
