@@ -14,31 +14,17 @@ use EventEngine\JsonSchema\Type;
 use EventEngine\JsonSchema\Type\ObjectType;
 use InvalidArgumentException;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionProperty;
-use RuntimeException;
-use Symfony\Component\Yaml\Yaml;
 use TeamBlue\Util\ScalarUtil;
 use TeamBlue\Util\ValueObjectUtil;
 
 use function array_diff_key;
-use function array_filter;
 use function array_flip;
 use function array_intersect_key;
 use function array_key_exists;
 use function array_keys;
-use function array_merge;
 use function count;
-use function in_array;
-use function is_array;
-use function json_decode;
-use function json_encode;
-use function method_exists;
 use function sprintf;
-use function str_starts_with;
-
-use const ARRAY_FILTER_USE_KEY;
-use const JSON_THROW_ON_ERROR;
 
 trait JsonSchemaAwareRecordLogic
 {
@@ -48,43 +34,6 @@ trait JsonSchemaAwareRecordLogic
         ImmutableRecordLogic::voTypeToNative insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setNativeData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setRecordData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
-        ImmutableRecordLogic::buildPropTypeMap as parentImmutableRecordBuildPropTypeMap;
-        ImmutableRecordLogic::init as immutableInitWithDefaultProperties;
-    }
-
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private static bool $__useMaxValues = false;
-
-    /**
-     * Combine the __defaultProperties method with the php properties that have a default value.
-     *
-     * @return array<string, mixed>
-     */
-    public static function defaultProperties(): array
-    {
-        self::initPropTypeMap();
-
-        $propertyNames     = array_keys(self::$__propTypeMap);
-        $defaultProperties = self::__defaultProperties();
-
-        return array_filter(
-            [...(new ReflectionClass(static::class))->getDefaultProperties(), ...$defaultProperties],
-            static fn ($key) => in_array($key, $propertyNames),
-            ARRAY_FILTER_USE_KEY,
-        );
-    }
-
-    /** @return array<mixed> */
-    private static function allExamples(): array
-    {
-        if (
-            (new ReflectionClass(static::class))->implementsInterface(HasPropertyExamples::class)
-            && method_exists(static::class, 'examples')
-        ) {
-            return static::examples();
-        }
-
-        return [];
     }
 
     /** @param array<mixed> $arrayPropTypeMap */
@@ -250,41 +199,6 @@ trait JsonSchemaAwareRecordLogic
     }
 
     /**
-     * @param array<mixed> $nativeData
-     *
-     * @return self
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
-     */
-    public static function fromArrayWithDefaultMaxValues(array $nativeData)
-    {
-        self::$__useMaxValues = true;
-        $nativeData = array_merge(self::maxValues(), $nativeData);
-
-        return self::fromArray($nativeData);
-    }
-
-    /** @return array<string, mixed> */
-    private static function maxValues(): array
-    {
-        return [];
-    }
-
-    /**
-     * Unset use max values.
-     *
-     * @return array<mixed>
-     */
-    private static function buildPropTypeMap(): array
-    {
-        $propTypeMap = self::parentImmutableRecordBuildPropTypeMap();
-
-        unset($propTypeMap['__useMaxValues']);
-
-        return $propTypeMap;
-    }
-
-    /**
      * @return array<string>
      *
      * @inheritDoc
@@ -292,85 +206,6 @@ trait JsonSchemaAwareRecordLogic
     private static function __optionalProperties(): array
     {
         return array_keys(self::defaultProperties());
-    }
-
-    private function init(): void
-    {
-        $this->immutableInitWithDefaultProperties();
-
-        // phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
-        foreach (self::$__propTypeMap as $key => [$type, $isNative, $isNullable]) {
-            if ($isNative || isset($this->{$key})) {
-                continue;
-            }
-
-            try {
-                $reflectionType = new ReflectionClass($type);
-            } catch (ReflectionException) {
-                continue;
-            }
-
-            if (! $reflectionType->implementsInterface(ImmutableRecord::class)) {
-                continue;
-            }
-
-            $this->initProperty($key, $type, $isNullable);
-        }
-
-        self::$__useMaxValues = false;
-    }
-
-    /** @param class-string<ImmutableRecord> $type */
-    public function initProperty(string $key, string $type, bool $isNullable): void
-    {
-        try {
-            $this->{$key} = self::$__useMaxValues && method_exists($type, 'fromArrayWithDefaultMaxValues')
-                ? $type::fromArrayWithDefaultMaxValues([])
-                : $type::fromArray([]);
-        } catch (InvalidArgumentException $exception) {
-            if ($isNullable) {
-                $this->{$key} = null;
-            } elseif (! str_starts_with($exception->getMessage(), 'Missing record data for key')) {
-                throw $exception;
-            }
-        }
-    }
-
-    public static function create(): self
-    {
-        return self::fromArray([]);
-    }
-
-    public static function fromJson(string $json): self
-    {
-        $nativeData = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-
-        if (! is_array($nativeData)) {
-            throw new RuntimeException('Invalid JSON data.');
-        }
-
-        return self::fromArray($nativeData);
-    }
-
-    public function toJson(): string
-    {
-        return json_encode($this->toArray(), JSON_THROW_ON_ERROR);
-    }
-
-    public static function fromYaml(string $yaml): self
-    {
-        $nativeData = Yaml::parse($yaml);
-
-        if (! is_array($nativeData)) {
-            throw new RuntimeException('Invalid Yaml data.');
-        }
-
-        return self::fromArray($nativeData);
-    }
-
-    public function toYaml(): string
-    {
-        return Yaml::dump($this->toArray());
     }
 
     /**
