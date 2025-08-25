@@ -34,6 +34,9 @@ trait JsonSchemaAwareRecordLogic
         ImmutableRecordLogic::voTypeToNative insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setNativeData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
         ImmutableRecordLogic::setRecordData insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
+        ImmutableRecordLogic::init insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
+        ImmutableRecordLogic::buildPropTypeMap insteadof \EventEngine\JsonSchema\JsonSchemaAwareRecordLogic;
+
     }
 
     /** @param array<mixed> $arrayPropTypeMap */
