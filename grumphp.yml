@@ -8,14 +8,17 @@ grumphp:
     tasks:
         phpcs: null
         phpstan: null
-        phpmd:
-            ruleset:
-                - phpmd.xml
-        phpmd-tests:
-            metadata:
-                task: phpmd
-            ruleset:
-                - phpmd-tests.xml
+        # phpmd is temporarily disabled: pdepend/phpmd (2.x) is not yet
+        # compatible with Symfony 8 and crashes on load. Re-enable once a
+        # compatible phpmd/pdepend release is available.
+        # phpmd:
+        #     ruleset:
+        #         - phpmd.xml
+        # phpmd-tests:
+        #     metadata:
+        #         task: phpmd
+        #     ruleset:
+        #         - phpmd-tests.xml
         git_commit_message:
             enforce_capitalized_subject: false
             type_scope_conventions:

@@ -18,6 +18,8 @@ use PHPUnit\Framework\TestCase;
 use TeamBlue\JsonImmutableObjects\Tests\Object\Immutable\TestImmutable;
 use TeamBlue\JsonImmutableObjects\Tests\Object\RandomClass;
 use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Bool\TestBool;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\BackedEnumPriority;
+use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\BackedEnumStatus;
 use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\IntEnum;
 use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Enum\StringEnum;
 use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\Float\TestFloat;
@@ -26,7 +28,7 @@ use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\List\TestList;
 use TeamBlue\JsonImmutableObjects\Tests\Object\ValueObject\List\TestListImmutable;
 use TeamBlue\JsonImmutableObjects\TypeDetector;
 
-/** @SuppressWarnings(PHPMD.CouplingBetweenObjects) */
+/** @SuppressWarnings("PHPMD.CouplingBetweenObjects") */
 class TypeDetectorTest extends TestCase
 {
     public function testTypeOfString(): void
@@ -69,6 +71,22 @@ class TypeDetectorTest extends TestCase
         $type = TypeDetector::typeFromClass(StringEnum::class);
 
         $this->assertInstanceOf(StringEnumType::class, $type);
+    }
+
+    public function testSchemaAwareStringBackedEnumType(): void
+    {
+        $type = TypeDetector::typeFromClass(BackedEnumStatus::class);
+
+        $this->assertInstanceOf(StringEnumType::class, $type);
+        $this->assertSame(['active', 'inactive'], $type->toArray()['enum']);
+    }
+
+    public function testSchemaAwareIntBackedEnumType(): void
+    {
+        $type = TypeDetector::typeFromClass(BackedEnumPriority::class);
+
+        $this->assertInstanceOf(IntEnumType::class, $type);
+        $this->assertSame([1, 2], $type->toArray()['enum']);
     }
 
     public function testBooleanType(): void

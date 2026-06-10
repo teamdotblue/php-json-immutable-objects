@@ -6,6 +6,8 @@ namespace TeamBlue\JsonImmutableObjects\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
+use TeamBlue\JsonImmutableObjects\Tests\Object\RecordWithNullableSchemaAwareBackedEnum;
+use TeamBlue\JsonImmutableObjects\Tests\Object\RecordWithSchemaAwareBackedEnum;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TestObject;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithArrayAsArrayPropItem;
 use TeamBlue\JsonImmutableObjects\Tests\Object\TestObjectWithInvalidDefaultProperties;
@@ -100,6 +102,29 @@ class JsonSchemaAwareRecordLogicTest extends TestCase
         $schema = $test::__schema()->toArray();
 
         $this->assertIsString($schema['properties']['testString']['examples'][0]);
+    }
+
+    public function testSchemaAwareBackedEnumPropertyExtractsEnumSchema(): void
+    {
+        $schema = RecordWithSchemaAwareBackedEnum::__schema()->toArray();
+
+        $this->assertSame('integer', $schema['properties']['priority']['type']);
+        $this->assertSame([1, 2], $schema['properties']['priority']['enum']);
+    }
+
+    public function testNullableSchemaAwareBackedEnumPropertyExtractsNullableEnumSchema(): void
+    {
+        $schema = RecordWithNullableSchemaAwareBackedEnum::__schema()->toArray();
+
+        $this->assertSame(['string', 'null'], $schema['properties']['status']['type']);
+        $this->assertSame(['active', 'inactive', null], $schema['properties']['status']['enum']);
+    }
+
+    public function testNullableSchemaAwareBackedEnumPropertyHandlesNullValue(): void
+    {
+        $record = RecordWithNullableSchemaAwareBackedEnum::fromArray(['status' => null]);
+
+        $this->assertSame(['status' => null], $record->toArray());
     }
 
     public function testSubImmutableRecord(): void

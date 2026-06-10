@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects;
 
+use BackedEnum;
 use DateTime;
 use EventEngine\JsonSchema\AnnotatedType;
 use EventEngine\JsonSchema\JsonSchema;
@@ -21,11 +22,12 @@ use function class_implements;
 use function class_parents;
 use function in_array;
 use function is_array;
+use function is_subclass_of;
 use function method_exists;
 use function strrchr;
 use function substr;
 
-/** @SuppressWarnings(PHPMD.CouplingBetweenObjects) */
+/** @SuppressWarnings("PHPMD.CouplingBetweenObjects") */
 final class TypeDetector
 {
     /** @param string|class-string<JsonSchemaAwareRecord|mixed> $classOrType */
@@ -61,6 +63,7 @@ final class TypeDetector
         }
 
         $type = self::typeFromList($classOrType)
+            ?? self::typeFromBackedEnum($classOrType)
             ?? self::typeFromEnum($classOrType)
             ?? self::typeFromValueObject($classOrType)
             ?? self::typeFromDateTime($classOrType)
@@ -86,6 +89,16 @@ final class TypeDetector
         }
 
         return JsonSchema::array($class::__itemSchema(), self::validationRulesFromClass($class));
+    }
+
+    /** @param class-string $class */
+    private static function typeFromBackedEnum(string $class): Type|null
+    {
+        if (! is_subclass_of($class, BackedEnum::class) || ! method_exists($class, '__schema')) {
+            return null;
+        }
+
+        return $class::__schema();
     }
 
     /** @param class-string $class */
