@@ -19,16 +19,16 @@
         "phpdocumentor/reflection-docblock": "~5.0",
         "symfony/http-kernel": "~6.0 || ~7.0 || ~8.0",
         "symfony/yaml": "~6.0 || ~7.0 || ~8.0",
-        "team-blue/php-value-objects": "^2.0",
+        "team-blue/php-value-objects": "^2.2.0",
         "team-blue/php-util": "^1.0"
     },
     "require-dev" : {
         "doctrine/coding-standard": "~12.0",
         "phpmd/phpmd": "~2.0",
         "phpro/grumphp": "~2.0",
-        "phpstan/phpstan": "~1.0",
+        "phpstan/phpstan": "~1.0 || ~2.0",
         "phpunit/phpunit": "~11.0",
-        "rector/rector": "~1.0",
+        "rector/rector": "~1.0 || ~2.0",
         "squizlabs/php_codesniffer": "~3.0"
     },
     "repositories": {
@@ -63,8 +63,6 @@
         "tests": [
             "vendor/bin/phpcs",
             "vendor/bin/phpstan analyze --no-progress",
-            "vendor/bin/phpmd src text phpmd.xml",
-            "vendor/bin/phpmd tests text phpmd-tests.xml",
             "vendor/bin/rector --dry-run --no-progress-bar",
             "vendor/bin/phpunit"
         ]

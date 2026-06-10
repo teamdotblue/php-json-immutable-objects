@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TeamBlue\JsonImmutableObjects\MetadataExtractor;
 
+use BackedEnum;
 use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\JsonSchemaAwareCollection;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
@@ -12,6 +13,7 @@ use EventEngine\Schema\TypeSchema;
 use LogicException;
 use ReflectionClass;
 
+use function method_exists;
 use function sprintf;
 
 class JsonSchemaExtractor
@@ -41,6 +43,16 @@ class JsonSchemaExtractor
             $itemSchema = $message::__itemSchema();
 
             return JsonSchema::array($itemSchema);
+        }
+
+        if (
+            $reflectionClass->isSubclassOf(BackedEnum::class)
+            && method_exists($reflectionClass->getName(), '__schema')
+        ) {
+            /** @var class-string<BackedEnum> $message */
+            $message = $reflectionClass->getName();
+
+            return $message::__schema();
         }
 
         throw new LogicException(
