@@ -5,3 +5,6 @@ services:
 
     TeamBlue\JsonImmutableObjects\MetadataExtractor\:
         resource: '../../../src/MetadataExtractor/*'
+
+    TeamBlue\JsonImmutableObjects\Serializer\:
+        resource: '../../../src/Serializer/*'
