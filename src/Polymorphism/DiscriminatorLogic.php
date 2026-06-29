@@ -10,9 +10,9 @@ use EventEngine\JsonSchema\JsonSchemaAwareRecord;
 use EventEngine\JsonSchema\Type\ObjectType;
 use EventEngine\JsonSchema\Type\StringType;
 use EventEngine\Schema\TypeSchema;
-use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
+use TeamBlue\JsonImmutableObjects\Exception\Polymorphism\InvalidDiscriminatorException;
 use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
 use TeamBlue\Util\ArrayUtil;
 use TeamBlue\Util\StringUtil;
@@ -113,7 +113,7 @@ trait DiscriminatorLogic
         $data = ArrayUtil::toCamelCasedKeys($data);
 
         if (! isset($data[static::camelCasedPropertyName()])) {
-            throw new InvalidArgumentException(
+            throw new InvalidDiscriminatorException(
                 sprintf(
                     'No discriminator property \'%s\' found to generate \'%s\'.',
                     static::camelCasedPropertyName(),
@@ -132,7 +132,7 @@ trait DiscriminatorLogic
             return $propertyValue->toString();
         }
 
-        throw new LogicException(
+        throw new InvalidDiscriminatorException(
             sprintf(
                 'Property \'%s\' needs to be a string as a discriminator for \'%s\'.',
                 static::camelCasedPropertyName(),
@@ -148,7 +148,7 @@ trait DiscriminatorLogic
         $mapping = static::mapping();
 
         if (! isset($mapping[$propertyValue])) {
-            throw new InvalidArgumentException(
+            throw new InvalidDiscriminatorException(
                 sprintf(
                     'Discriminator value \'%s\' is not valid for \'%s\'.',
                     $propertyValue,
