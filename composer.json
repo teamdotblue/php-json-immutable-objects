@@ -19,7 +19,7 @@
         "phpdocumentor/reflection-docblock": "~5.0",
         "symfony/http-kernel": "~6.0 || ~7.0 || ~8.0",
         "symfony/yaml": "~6.0 || ~7.0 || ~8.0",
-        "team-blue/php-value-objects": "^2.2.0",
+        "team-blue/php-value-objects": "^3.0.0",
         "team-blue/php-util": "^1.0"
     },
     "require-dev" : {
@@ -49,6 +49,11 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.5.x-dev"
+        }
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
