@@ -1,0 +1,41 @@
+grumphp:
+    fixer:
+        enabled: true
+        fix_by_default: true
+    ascii:
+        succeeded: ~
+        failed: ~
+    tasks:
+        phpcs: null
+        phpstan: null
+        # phpmd is temporarily disabled: pdepend/phpmd (2.x) is not yet
+        # compatible with Symfony 8 and crashes on load. Re-enable once a
+        # compatible phpmd/pdepend release is available.
+        # phpmd:
+        #     ruleset:
+        #         - phpmd.xml
+        # phpmd-tests:
+        #     metadata:
+        #         task: phpmd
+        #     ruleset:
+        #         - phpmd-tests.xml
+        git_commit_message:
+            enforce_capitalized_subject: false
+            type_scope_conventions:
+                types:
+                    - build
+                    - chore
+                    - ci
+                    - docs
+                    - feat
+                    - fix
+                    - perf
+                    - refactor
+                    - revert
+                    - style
+                    - test
+        git_branch_name:
+            whitelist:
+                - "/^(feature|hotfix|bugfix)\\/([A-Z]+-[0-9]+-)?.+$/"
+                - "/^(main)$/"
+

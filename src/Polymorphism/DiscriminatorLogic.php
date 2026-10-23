@@ -1,0 +1,254 @@
+<?php
+
+declare(strict_types=1);
+
+namespace TeamBlue\JsonImmutableObjects\Polymorphism;
+
+use EventEngine\Data\ImmutableRecord;
+use EventEngine\JsonSchema\JsonSchema;
+use EventEngine\JsonSchema\JsonSchemaAwareRecord;
+use EventEngine\JsonSchema\Type\ObjectType;
+use EventEngine\JsonSchema\Type\StringType;
+use EventEngine\Schema\TypeSchema;
+use LogicException;
+use ReflectionClass;
+use TeamBlue\JsonImmutableObjects\Exception\Polymorphism\InvalidDiscriminatorException;
+use TeamBlue\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
+use TeamBlue\Util\ArrayUtil;
+use TeamBlue\Util\StringUtil;
+
+use function array_combine;
+use function array_filter;
+use function array_keys;
+use function array_map;
+use function array_values;
+use function class_exists;
+use function class_implements;
+use function in_array;
+use function is_object;
+use function is_string;
+use function method_exists;
+use function sprintf;
+
+// phpcs:disable Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
+/**
+ * @method static string propertyName()
+ * @method static array<class-string<JsonSchemaAwareRecord>> jsonSchemaAwareRecords()
+ */
+trait DiscriminatorLogic
+{
+    use JsonSchemaAwareRecordLogic {
+        fromRecordData as parentFromRecordData;
+        with as withParent;
+    }
+
+    private JsonSchemaAwareRecord $value;
+
+    protected static function camelCasedPropertyName(): string
+    {
+        return StringUtil::camelize(static::propertyName());
+    }
+
+    public function value(): JsonSchemaAwareRecord
+    {
+        return $this->value;
+    }
+
+    /** @inheritDoc */
+    public static function mapping(): array
+    {
+        $keys = array_map(
+            static fn (string $model) => (new ReflectionClass($model))->getShortName(),
+            static::jsonSchemaAwareRecords(),
+        );
+
+        /** @var array<string, class-string<JsonSchemaAwareRecord>> $mapping */
+        $mapping = array_combine($keys, static::jsonSchemaAwareRecords());
+
+        return $mapping;
+    }
+
+    /** @inheritDoc */
+    public static function fromRecordData(array $recordData): self
+    {
+        $propertyValue        = self::propertyValue($recordData);
+        $immutableRecordClass = self::immutableRecordClass($propertyValue);
+
+        return self::parentFromRecordData(['value' => $immutableRecordClass::fromRecordData($recordData)]);
+    }
+
+    /** @inheritDoc */
+    public static function fromArray(array $nativeData): self
+    {
+        $propertyValue        = self::propertyValue($nativeData);
+        $immutableRecordClass = self::immutableRecordClass($propertyValue);
+
+        $value = match (true) {
+            self::$__encryptedSensitiveData => $immutableRecordClass::fromEncryptedSensitiveData($nativeData),
+            self::$__useMaxValues => $immutableRecordClass::fromArrayWithDefaultMaxValues($nativeData),
+            default => $immutableRecordClass::fromArray($nativeData),
+        };
+
+        return self::parentFromRecordData(['value' => $value]);
+    }
+
+    /** @inheritDoc */
+    public static function fromEncryptedSensitiveData(array $nativeData): self
+    {
+        $propertyValue        = self::propertyValue($nativeData);
+        $immutableRecordClass = self::immutableRecordClass($propertyValue);
+
+        return self::parentFromRecordData(
+            [
+                'value' => method_exists($immutableRecordClass, 'fromEncryptedSensitiveData')
+                    ? $immutableRecordClass::fromEncryptedSensitiveData($nativeData)
+                    : $immutableRecordClass::fromArray($nativeData),
+            ],
+        );
+    }
+
+    /** @param array<string, mixed> $data */
+    private static function propertyValue(array $data): string
+    {
+        $data = ArrayUtil::toCamelCasedKeys($data);
+
+        if (! isset($data[static::camelCasedPropertyName()])) {
+            throw new InvalidDiscriminatorException(
+                sprintf(
+                    'No discriminator property \'%s\' found to generate \'%s\'.',
+                    static::camelCasedPropertyName(),
+                    static::class,
+                ),
+            );
+        }
+
+        $propertyValue = $data[static::camelCasedPropertyName()];
+
+        if (is_string($propertyValue)) {
+            return $propertyValue;
+        }
+
+        if (is_object($propertyValue) && method_exists($propertyValue, 'toString')) {
+            return $propertyValue->toString();
+        }
+
+        throw new InvalidDiscriminatorException(
+            sprintf(
+                'Property \'%s\' needs to be a string as a discriminator for \'%s\'.',
+                static::camelCasedPropertyName(),
+                static::class,
+            ),
+        );
+    }
+
+    /** @return class-string<JsonSchemaAwareRecord> */
+    private static function immutableRecordClass(string $propertyValue): string
+    {
+        /** @var array<string, class-string<JsonSchemaAwareRecord>> $mapping */
+        $mapping = static::mapping();
+
+        if (! isset($mapping[$propertyValue])) {
+            throw new InvalidDiscriminatorException(
+                sprintf(
+                    'Discriminator value \'%s\' is not valid for \'%s\'.',
+                    $propertyValue,
+                    static::class,
+                ),
+            );
+        }
+
+        $class = $mapping[$propertyValue];
+
+        if (! class_exists($class)) {
+            throw new LogicException(
+                sprintf(
+                    'Class \'%s\' doesn\'t exists as oneOf model for discriminator \'%s\'.',
+                    $class,
+                    static::class,
+                ),
+            );
+        }
+
+        $interfaces = class_implements($class);
+
+        if (! $interfaces || ! in_array(JsonSchemaAwareRecord::class, $interfaces)) {
+            throw new LogicException(
+                sprintf(
+                    'Class \'%s\' should be an implementation of \'%s\' ' .
+                    'to be a oneOf model for discriminator \'%s\'.',
+                    $class,
+                    JsonSchemaAwareRecord::class,
+                    static::class,
+                ),
+            );
+        }
+
+        return $mapping[$propertyValue];
+    }
+
+    /** @inheritDoc */
+    public function with(array $recordData): self
+    {
+        if (isset($recordData[static::camelCasedPropertyName()])) {
+            throw new LogicException(
+                sprintf(
+                    'Can\'t set the discriminator property as a key in the with function for \'%s\'.',
+                    static::class,
+                ),
+            );
+        }
+
+        return $this->withParent(['value' => $this->value->with($recordData)]);
+    }
+
+    /** @inheritDoc */
+    public function toArray(): array
+    {
+        return $this->value->toArray();
+    }
+
+    /** @inheritdoc  */
+    public function toSensitiveEncryptedArray(): array
+    {
+        return method_exists($this->value, 'toSensitiveEncryptedArray')
+            ? $this->value->toSensitiveEncryptedArray()
+            : $this->value->toArray();
+    }
+
+    public function equals(ImmutableRecord|Discriminator $other): bool
+    {
+        return $this->value->equals($other instanceof Discriminator ? $other->value() : $other);
+    }
+
+    public static function __schema(): TypeSchema
+    {
+        return JsonSchema::union(
+            ...array_values(
+                array_filter(
+                    array_map(
+                        static function (string $discriminatorValue, string $class) {
+                            if (! method_exists($class, '__schema')) {
+                                return null;
+                            }
+
+                            /** @var ObjectType $schema */
+                            $schema = $class::__schema();
+
+                            return $schema->withMergedRequiredProps(
+                                [
+                                    static::camelCasedPropertyName() => new StringType(
+                                        [
+                                            StringType::ENUM => [$discriminatorValue],
+                                        ],
+                                    ),
+                                ],
+                            );
+                        },
+                        array_keys(static::mapping()),
+                        static::mapping(),
+                    ),
+                ),
+            ),
+        );
+    }
+}

@@ -1,0 +1,13 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    excludePaths:
+        analyse:
+            - tests/Object/TestObjectWithInvalidDefaultProperties.php
+services:
+    -
+        class: TeamBlue\JsonImmutableObjects\PhpStan\PropertiesExtension
+        tags:
+            - phpstan.properties.readWriteExtension

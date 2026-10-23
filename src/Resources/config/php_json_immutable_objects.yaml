@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    TeamBlue\JsonImmutableObjects\MetadataExtractor\:
+        resource: '../../../src/MetadataExtractor/*'
